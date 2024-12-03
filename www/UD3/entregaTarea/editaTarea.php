@@ -24,19 +24,19 @@ include 'mysqli.php'; // Incluir las funciones de PDO
              ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>Nueva Tarea</h2>
+                    <h2>Editar Tarea</h2>
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <?php
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-                        // Crear el array $usuario con los datos del formulario, ya filtrados
+                        // Crear el array $tarea con los datos del formulario, ya filtrados
+                        $id = $_POST['id_tarea'];
                         $id_usuario = $_POST['id_usuario'];
-                    
                         $tarea = [
                             'titulo'    => filtrarContenido($_POST['titulo_tarea']),
                             'descripcion'  => filtrarContenido($_POST['descripcion_tarea']),
-                            'estado'  => filtrarContenido($_POST['estado_tarea']),
+                            'estado'  => filtrarContenido($_POST['estado_tarea'])
                         ];
 
                         // Validaciones
@@ -54,11 +54,12 @@ include 'mysqli.php'; // Incluir las funciones de PDO
                             foreach ($errores as $error) {
                                 echo "<p style='color:red;'>$error</p>";
                             }
-                        } else { // FUNCION PARA CREAR LA TAREA
+                        } else { // FUNCION PARA EDITAR EL USUARIO
 
-                            $tarea = $tarea + ['id_usuario' => $id_usuario];   // Nuestra funcion de validar no acepta strings <1 .
+                            $tarea = array_merge(['id'=> $id],$tarea); // Nuestra funcion de validar no acepta strings <1
+                            $tarea = array_merge($tarea,['id_usuario' => $id_usuario]);
 
-                            $resultado = createTarea($tarea);
+                            $resultado = updateTarea($tarea);
                             if ($resultado['status'] == 'success') {
                                 echo "<div class='alert alert-success' role='alert'>{$resultado['message']}</div>";
                             } elseif ($resultado['status'] == 'error') {

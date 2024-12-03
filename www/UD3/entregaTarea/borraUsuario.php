@@ -1,9 +1,7 @@
 <?php
-// inicializar.php
-include 'init.php'; // Incluir las funciones de inicialización
 
-// Llamar a la función de inicialización
-$resultados = inicializarBaseDeDatos();
+include 'pdo.php'; // Incluir las funciones de PDO
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,20 +24,26 @@ $resultados = inicializarBaseDeDatos();
              ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>Inicializar</h2>
+                    <h2>Borrar Usuario</h2>
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <?php
-                    // Mostrar el resultado de las operaciones
-                    foreach ($resultados as $resultado) {
+
+                    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                        $id = (int) $_GET['id'];
+                        
+                        $resultado = deleteUsuario($id); // `deleteUsuario` devuelve un único array asociativo
+
+                        // Mostrar el resultado de la operación
                         if ($resultado['status'] == 'success') {
                             echo "<div class='alert alert-success' role='alert'>{$resultado['message']}</div>";
-                        } elseif ($resultado['status'] == 'info') {
-                            echo "<div class='alert alert-warning' role='alert'>{$resultado['message']}</div>";
                         } elseif ($resultado['status'] == 'error') {
                             echo "<div class='alert alert-danger' role='alert'>{$resultado['message']}</div>";
                         }
+                    } else {
+                        echo "<div class='alert alert-danger' role='alert'>Error al recuperar el ID del usuario.</div>";
                     }
+
                 ?>
                 </div>
             </main>

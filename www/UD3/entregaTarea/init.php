@@ -90,26 +90,35 @@ function crearTablaTareas($conexion) {
     }
 }
 
-function inicializarBaseDeDatos() { // ARREGLAR PARA MANEJAR LAS 2 CONEXIONES
+function inicializarBaseDeDatos() {
     // Array para almacenar los resultados de cada operación
     $resultados = [];
 
+    // Obtener conexiones
     $conexion = obtenerConexion();
-    $conexionTarea = obtenerConexionTarea();
+    $conexionTarea = obtenerConexionTareas();
 
-    // Crear la base de datos
-    $resultados[] = creaDB($conexion); // Aquí debería devolver un array con el resultado (success, error, etc.)
-    cerrarConexion($conexion); // Cerrar la conexión después de las operaciones
+    try {
+        // Crear la base de datos
+        $resultados[] = creaDB($conexion);
 
-    if (is_array($conexion) && $conexion['status'] === 'error') {
-        $resultados[] = $conexion; // Si hay error de conexión, se agrega el error al array
-    } else {
+        // Crear tablas en la base de datos 'tareas'
         $resultados[] = crearTablaUsuarios($conexionTarea);
         $resultados[] = crearTablaTareas($conexionTarea);
-        cerrarConexion($conexionTarea); // Cerrar la conexión después de las operaciones
+    } catch (Exception $e) {
+        // En caso de excepción, registrar el error
+        $resultados[] = [
+            'status' => 'error',
+            'mensaje' => $e->getMessage()
+        ];
+    } finally {
+        // Cerrar las conexiones
+        cerrarConexion($conexion);
+        cerrarConexion($conexionTarea);
     }
 
     return $resultados;
 }
+
 
 ?>

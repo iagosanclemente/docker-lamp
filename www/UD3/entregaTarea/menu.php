@@ -12,13 +12,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/listaUsuario.php">
-                            Liste de usuarios (POO)
+                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/listaUsuarios.php">
+                            Liste de usuarios (PDO)
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/nuevoUsuario.php">
-                            Nuevo usuario (POO)
+                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/nuevoUsuarioForm.php">
+                            Nuevo usuario (PDO)
                         </a>
                     </li>
                     <li class="nav-item">
@@ -27,8 +27,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/nuevaTarea.php">
+                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/nuevaTareaForm.php">
                             Nueva tarea (mysql)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/UD3/entregaTarea/buscaTareas.php">
+                            Buscador de tareas (PDO)
                         </a>
                     </li>
                 </ul>

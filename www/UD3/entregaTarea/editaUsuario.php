@@ -1,6 +1,6 @@
 <?php
 
-include 'mysqli.php'; // Incluir las funciones de PDO
+include 'pdo.php'; // Incluir las funciones de PDO
 
 ?>
 <!DOCTYPE html>
@@ -24,25 +24,25 @@ include 'mysqli.php'; // Incluir las funciones de PDO
              ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>Nueva Tarea</h2>
+                    <h2>Editar Usuario</h2>
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <?php
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         // Crear el array $usuario con los datos del formulario, ya filtrados
-                        $id_usuario = $_POST['id_usuario'];
-                    
-                        $tarea = [
-                            'titulo'    => filtrarContenido($_POST['titulo_tarea']),
-                            'descripcion'  => filtrarContenido($_POST['descripcion_tarea']),
-                            'estado'  => filtrarContenido($_POST['estado_tarea']),
+                        $id = $_POST['id_usuario'];
+                        $usuario = [
+                            'nombre'    => filtrarContenido($_POST['nombre_usuario']),
+                            'apellidos'  => filtrarContenido($_POST['apellidos_usuario']),
+                            'username'  => filtrarContenido($_POST['username_usuario']),
+                            'contrasena'  => filtrarContenido($_POST['password_usuario'])
                         ];
 
                         // Validaciones
                         $errores = [];
 
-                        foreach ($tarea as $campo => $valor) {
+                        foreach ($usuario as $campo => $valor) {
                             if (!esValido($valor)) {
                                 $errores[] = "El campo $campo no es válido.";
                             }
@@ -54,11 +54,11 @@ include 'mysqli.php'; // Incluir las funciones de PDO
                             foreach ($errores as $error) {
                                 echo "<p style='color:red;'>$error</p>";
                             }
-                        } else { // FUNCION PARA CREAR LA TAREA
+                        } else { // FUNCION PARA EDITAR EL USUARIO
 
-                            $tarea = $tarea + ['id_usuario' => $id_usuario];   // Nuestra funcion de validar no acepta strings <1 .
+                            $usuario = array_merge(['id'=> $id],$usuario); // Nuestra funcion de validar no acepta strings <1
 
-                            $resultado = createTarea($tarea);
+                            $resultado = updateUsuario($usuario);
                             if ($resultado['status'] == 'success') {
                                 echo "<div class='alert alert-success' role='alert'>{$resultado['message']}</div>";
                             } elseif ($resultado['status'] == 'error') {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UD2. Tarea</title>
+    <title>UD3. Tarea</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -26,21 +26,31 @@
                         <thead class="thead">
                             <tr>                            
                                 <th>Identificador</th>
-                                <th>Descriptción</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
                                 <th>Estado</th>
+                                <th>Usuario</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
                             // Incluir el archivo utils.php
-                            include 'utils.php';
+                            include 'mysqli.php';
 
-                            // O bien accede directamente al array global si has definido $listaTareas en utils.php
-                            $tareas = $listaTareas;
+                            $result = selectTareas();      
 
-                            // Mostrar las tareas en una tabla
-                            foreach ($tareas as $tarea) {
-                                echo "<tr><td>{$tarea['id']}</td><td>{$tarea['desc']}</td><td>{$tarea['estado']}</td></tr>";
+                            if (!empty($result)) { 
+                                foreach ($result as $row) {
+                                    echo "<tr><td>{$row['id']}</td><td>{$row['titulo']}</td><td>{$row['descripcion']}</td><td>{$row['estado']}<td>{$row['username']}</td></td>
+                                    <td> 
+                                        <a href='editaTareaForm.php?id={$row['id']}' class='btn btn-primary btn-sm'>Editar</a>
+                                        <a href='borraTarea.php?id={$row['id']}&id_usuario={$row['id_usuario']}' class='btn btn-danger btn-sm'>Borrar</a>
+                                    </td></tr>";
+                                }
+                            }
+                            else {
+                              echo "Sin resultados";
                             }
                         ?>
                         </tbody>
